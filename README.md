@@ -41,5 +41,7 @@ struct ContentView_Previews: PreviewProvider {
 }
 ```
 
+![CleanShot 2022-08-06 at 21 43 56](https://user-images.githubusercontent.com/54872601/183252312-fb8ba89c-edf5-45a4-b1f6-c094c4b38063.gif)
+
 ## License
 MIT
