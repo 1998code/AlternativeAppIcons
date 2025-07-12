@@ -1,7 +1,7 @@
 # AlternativeAppIcons
 Cross-platform SwiftUI app that lets users choose alternative app icons on iOS and macOS
 
-![ios-16-num-96x96_2x](https://user-images.githubusercontent.com/54872601/183251612-884f62c7-52af-49b4-8870-35909d6ae6a7.png)
+<img width="781" height="562" alt="Screenshot 2025-07-12 at 5 26 49 PM" src="https://github.com/user-attachments/assets/90942d82-0a35-4ba5-99bc-bcd8a8a08bfd" />
 
 ## Features
 
