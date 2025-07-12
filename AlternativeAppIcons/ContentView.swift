@@ -98,7 +98,7 @@ struct ContentView: View {
         // On macOS, we can change the dock icon temporarily while the app is running
         if let image = NSImage(named: iconName) {
             NSApplication.shared.applicationIconImage = image
-            alertMessage = "Dock icon changed to \(iconName) (temporary - will reset when app restarts)"
+            alertMessage = "Dock icon changed to \(iconName)"
         } else {
             alertMessage = "Could not find icon named \(iconName) in the app bundle"
         }
