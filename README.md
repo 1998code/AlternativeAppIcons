@@ -5,7 +5,7 @@ Cross-platform SwiftUI app that lets users choose alternative app icons on iOS a
 
 ## Features
 
-### iOS
+### iOS / iPadOS
 - ✅ Full alternative app icon support
 - ✅ Permanent icon changes that persist between app launches
 - ✅ Wheel picker interface
@@ -18,7 +18,7 @@ Cross-platform SwiftUI app that lets users choose alternative app icons on iOS a
 - ✅ User feedback with clear explanations
 
 ## Platform Support
-- **iOS 16+** - Full alternate app icon functionality
+- **iOS / iPadOS 16+** - Full alternate app icon functionality
 - **macOS 12+** - Temporary dock icon changes
 - **Xcode 14+** - Development environment
 
@@ -26,7 +26,7 @@ Cross-platform SwiftUI app that lets users choose alternative app icons on iOS a
 
 ## How It Works
 
-### iOS Implementation
+### iOS / iPadOS Implementation
 Uses the native `UIApplication.shared.setAlternateIconName()` API to permanently change the app icon. The changes persist between app launches and are fully supported by the iOS system.
 
 ### macOS Implementation
@@ -182,7 +182,7 @@ Ensure your alternative icons are available as named image assets in your Asset 
 ![CleanShot 2022-08-06 at 21 43 56](https://user-images.githubusercontent.com/54872601/183252312-fb8ba89c-edf5-45a4-b1f6-c094c4b38063.gif)
 
 ## Tutorial
-Original Medium article: https://bit.ly/3A3M5Bs
+Medium article: https://bit.ly/3A3M5Bs
 
 ## License
 MIT
