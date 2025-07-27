@@ -14,12 +14,15 @@ Cross-platform SwiftUI app that lets users choose alternative app icons on iOS a
 ### macOS
 - ✅ Temporary dock icon changes while app is running
 - ✅ Menu picker interface (platform-appropriate)
+- ✅ **Drag and drop custom icon support**
+- ✅ **Custom icon upload with PNG, JPG, JPEG, SVG support**
+- ✅ **Automatic image resizing to app icon dimensions**
 - ✅ Icon preview functionality
 - ✅ User feedback with clear explanations
 
 ## Platform Support
 - **iOS / iPadOS 16+** - Full alternate app icon functionality
-- **macOS 12+** - Temporary dock icon changes
+- **macOS 11.5+** - Temporary dock icon changes with custom icon support
 - **Xcode 14+** - Development environment
 
 ![swiftui-128x128_2x](https://user-images.githubusercontent.com/54872601/183251609-f30ad0e8-6fc5-48e1-bb69-47298597c7d3.png)
@@ -32,113 +35,11 @@ Uses the native `UIApplication.shared.setAlternateIconName()` API to permanently
 ### macOS Implementation
 Changes the dock icon temporarily using `NSApplication.shared.applicationIconImage`. While macOS doesn't have built-in alternate app icon support like iOS, this provides a visual demonstration of the different icon options.
 
-## Code Example
-
-```swift
-import SwiftUI
-
-#if canImport(UIKit)
-import UIKit
-#endif
-
-#if canImport(AppKit)
-import AppKit
-#endif
-
-struct ContentView: View {
-    @AppStorage("appIcon") private var appIcon: String = "AppIcon"
-    @State var appIcons = ["AppIcon", "AppIcon 2"]
-    @State private var showAlert = false
-    @State private var alertMessage = ""
-    
-    var body: some View {
-        VStack(spacing: 20) {
-            Text("Alternative App Icons")
-                .font(.largeTitle)
-                .fontWeight(.bold)
-            
-            // Show preview of selected icon
-            if !appIcon.isEmpty {
-                VStack {
-                    Image(appIcon)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 100, height: 100)
-                        .clipShape(RoundedRectangle(cornerRadius: 20))
-                        .shadow(radius: 5)
-                    
-                    Text("Selected: \(appIcon)")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                }
-            }
-            
-            #if os(macOS)
-            Text("Note: On macOS, this will change the dock icon temporarily while the app is running.")
-                .font(.caption)
-                .foregroundColor(.secondary)
-                .multilineTextAlignment(.center)
-                .padding()
-            #endif
-            
-            Picker(selection: $appIcon, label: Text("App Icon Picker")) {
-                ForEach(appIcons, id: \.self) { icon in
-                    Text(icon).tag(icon)
-                }
-            }
-            #if os(iOS)
-            .pickerStyle(.wheel)
-            #else
-            .pickerStyle(.menu)
-            #endif
-            .onChange(of: appIcon) { newIcon in
-                changeAppIcon(to: newIcon)
-            }
-        }
-        .padding()
-        .alert("App Icon", isPresented: $showAlert) {
-            Button("OK") { }
-        } message: {
-            Text(alertMessage)
-        }
-    }
-    
-    private func changeAppIcon(to iconName: String) {
-        #if os(iOS)
-        let iconToSet = iconName == "AppIcon" ? nil : iconName
-        
-        guard UIApplication.shared.supportsAlternateIcons else {
-            alertMessage = "Alternative app icons are not supported on this device."
-            showAlert = true
-            return
-        }
-        
-        UIApplication.shared.setAlternateIconName(iconToSet) { error in
-            DispatchQueue.main.async {
-                if let error = error {
-                    alertMessage = "Failed to change app icon: \(error.localizedDescription)"
-                    showAlert = true
-                } else {
-                    alertMessage = "App icon changed successfully to \(iconName)!"
-                    showAlert = true
-                }
-            }
-        }
-        #elseif os(macOS)
-        // On macOS, we can change the dock icon temporarily while the app is running
-        if let image = NSImage(named: iconName) {
-            NSApplication.shared.applicationIconImage = image
-            alertMessage = "Dock icon changed to \(iconName)"
-        } else {
-            alertMessage = "Could not find icon named \(iconName) in the app bundle"
-        }
-        showAlert = true
-        #endif
-    }
-}
-```
-
-```
+**New: Custom Icon Support**
+- Select "Custom" from the picker to enable drag and drop
+- Drag image files (PNG, JPG, JPEG, SVG) onto the drop zone
+- Images are automatically resized to 1024x1024 (standard app icon size)
+- Custom icons are applied immediately to the dock
 
 ## Setup Instructions
 
@@ -171,6 +72,12 @@ Add your alternative app icons to the `CFBundleIcons` key in your Info.plist:
 ### 3. macOS Configuration
 Ensure your alternative icons are available as named image assets in your Asset Catalog so they can be loaded with `NSImage(named:)`.
 
+**New: Custom Icon Support**
+- No additional configuration required for custom icon support
+- The app automatically handles image loading, validation, and resizing
+- Supports PNG, JPG, JPEG, and SVG file formats
+- Images are automatically resized to 1024x1024 pixels
+
 ## Key Features
 
 - **Cross-Platform Compatibility**: Works on both iOS and macOS with platform-appropriate UI
@@ -178,6 +85,8 @@ Ensure your alternative icons are available as named image assets in your Asset 
 - **Conditional Compilation**: Uses `#if os()` directives for platform-specific code
 - **Error Handling**: Proper error handling with user-friendly messages
 - **Persistent Settings**: Uses `@AppStorage` to remember user's icon choice
+- **Custom Icon Support**: Drag and drop functionality for macOS with automatic image processing
+- **Smart UI**: Only shows relevant UI elements when they're meaningful
 
 ![CleanShot 2022-08-06 at 21 43 56](https://user-images.githubusercontent.com/54872601/183252312-fb8ba89c-edf5-45a4-b1f6-c094c4b38063.gif)
 
